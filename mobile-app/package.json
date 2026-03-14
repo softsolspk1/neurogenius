@@ -28,6 +28,6 @@
     "@babel/core": "^7.20.0"
   },
   "private": true,
-  "name": "mobile-app",
+  "name": "neuro-genius",
   "version": "1.0.0"
 }
