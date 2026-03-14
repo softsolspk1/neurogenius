@@ -1,13 +1,9 @@
-const { Sequelize } = require('sequelize');
+// Force inclusion of PostgreSQL driver for Vercel bundler
+try {
+  require('pg');
+} catch (e) {
+  console.warn('pg load failed early', e.message);
+}
 
-module.exports = (req, res) => {
-  try {
-    res.json({ 
-      message: 'Sequelize is available!', 
-      node_version: process.version,
-      sequelize_version: 'available'
-    });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+const app = require('./server');
+module.exports = app;
