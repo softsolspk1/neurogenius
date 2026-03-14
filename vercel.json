@@ -1,5 +1,6 @@
 
 {
+  "version": 2,
   "builds": [
     {
       "src": "backend/server.js",
@@ -18,7 +19,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "admin-panel/$1"
+      "destination": "/admin-panel/$1"
     }
   ]
 }
