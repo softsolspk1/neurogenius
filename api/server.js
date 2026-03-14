@@ -11,13 +11,17 @@ const notificationRoutes = require('./routes/notificationRoutes');
 const settingsRoutes = require('./routes/settingsRoutes');
 const statsRoutes = require('./routes/statsRoutes');
 
-const http = require('http');
-const socketHandler = require('./socketHandler');
-
 const app = express();
-const server = http.createServer(app);
-const io = socketHandler(server);
 const quizRoutes = require('./routes/quizRoutes');
+
+// Skip socket.io in serverless production
+let io = null;
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  const http = require('http');
+  const socketHandler = require('./socketHandler');
+  const server = http.createServer(app);
+  io = socketHandler(server);
+}
 app.set('socketio', io);
 
 // Middleware
