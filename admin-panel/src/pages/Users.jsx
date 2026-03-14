@@ -1,12 +1,24 @@
 
 import React, { useState, useEffect } from 'react';
 import api from '../api';
-import { Search, UserCheck, UserMinus, Shield, Trash2, Mail, MapPin } from 'lucide-react';
+import { Search, UserCheck, UserMinus, Shield, Trash2, Mail, MapPin, Plus, Loader2 } from 'lucide-react';
+import Modal from '../components/Modal';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: 'password123',
+    designation: 'Doctor',
+    specialty: '',
+    hospital: '',
+    city: ''
+  });
 
   useEffect(() => {
     fetchUsers();
@@ -42,6 +54,25 @@ const Users = () => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      await api.post('/api/auth/register', formData);
+      setModalOpen(false);
+      fetchUsers();
+      setFormData({
+        name: '', email: '', password: 'password123',
+        designation: 'Doctor', specialty: '', hospital: '', city: ''
+      });
+    } catch (error) {
+      console.error('Error adding doctor:', error);
+      alert('Failed to add doctor');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const filteredUsers = users.filter(user => 
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -52,16 +83,21 @@ const Users = () => {
     <div className="users-page animate-fade-in">
       <div className="top-bar">
         <h1>Doctor Management</h1>
-        <div style={{ position: 'relative', width: '350px' }}>
-          <Search style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-light)' }} size={20} />
-          <input 
-            type="text" 
-            placeholder="Search by name, email or specialty..." 
-            className="input"
-            style={{ paddingLeft: '3rem' }}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        <div style={{ display: 'flex', gap: '1rem' }}>
+          <div style={{ position: 'relative', width: '350px' }}>
+            <Search style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-light)' }} size={20} />
+            <input 
+              type="text" 
+              placeholder="Search by name, email or specialty..." 
+              className="input"
+              style={{ paddingLeft: '3rem' }}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <button className="btn btn-primary" onClick={() => setModalOpen(true)}>
+            <Plus size={18} /> Add New Doctor
+          </button>
         </div>
       </div>
 
@@ -162,6 +198,80 @@ const Users = () => {
           </table>
         )}
       </div>
+
+      <Modal 
+        isOpen={modalOpen} 
+        onClose={() => setModalOpen(false)} 
+        title="Add New Doctor"
+      >
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label className="label">Full Name</label>
+            <input 
+              className="input" 
+              required
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              placeholder="Dr. John Doe"
+            />
+          </div>
+          <div className="form-group">
+            <label className="label">Email Address</label>
+            <input 
+              className="input" 
+              type="email"
+              required
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              placeholder="doctor@example.com"
+            />
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div className="form-group">
+              <label className="label">Specialty</label>
+              <input 
+                className="input" 
+                value={formData.specialty}
+                onChange={(e) => setFormData({ ...formData, specialty: e.target.value })}
+                placeholder="Neurology"
+              />
+            </div>
+            <div className="form-group">
+              <label className="label">City</label>
+              <input 
+                className="input" 
+                value={formData.city}
+                onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                placeholder="New York"
+              />
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="label">Hospital / Clinic</label>
+            <input 
+              className="input" 
+              value={formData.hospital}
+              onChange={(e) => setFormData({ ...formData, hospital: e.target.value })}
+              placeholder="City General Hospital"
+            />
+          </div>
+          <div className="form-group">
+            <label className="label">Temporary Password</label>
+            <input 
+              className="input" 
+              value={formData.password}
+              readOnly
+              style={{ background: '#f8fafc' }}
+            />
+            <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+              Default password is password123. The doctor can change it later.
+            </p>
+          </div>
+          <button className="btn btn-primary" style={{ width: '100%', marginTop: '1rem' }} disabled={submitting}>
+            {submitting ? 'Saving...' : 'Add Doctor'}
+          </button>
+        </form>
+      </Modal>
 
       <style>{`
         .admin-table { width: 100%; border-collapse: collapse; }
