@@ -9,6 +9,7 @@ const questionRoutes = require('./routes/questionRoutes');
 const userRoutes = require('./routes/userRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const settingsRoutes = require('./routes/settingsRoutes');
+const statsRoutes = require('./routes/statsRoutes');
 
 const http = require('http');
 const socketHandler = require('./socketHandler');
@@ -28,6 +29,7 @@ app.use('/api/questions', questionRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/settings', settingsRoutes);
+app.use('/api/stats', statsRoutes);
 
 // Quiz & Leaderboard
 const quizController = require('./controllers/quizController');
