@@ -8,6 +8,7 @@ import Reports from './pages/Reports';
 import Analytics from './pages/Analytics';
 import Categories from './pages/Categories';
 import Settings from './pages/Settings';
+import Notifications from './pages/Notifications';
 import Sidebar from './components/Sidebar';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
             <Route path="/questions" element={<Questions />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/categories" element={<Categories />} />
+            <Route path="/notifications" element={<Notifications />} />
             <Route path="/settings" element={<Settings />} />
           </Routes>
         </main>

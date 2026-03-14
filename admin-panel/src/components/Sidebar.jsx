@@ -1,52 +1,72 @@
 
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Users, FolderTree, HelpCircle, BarChart3, Settings, LogOut } from 'lucide-react';
+import { 
+  LayoutDashboard, 
+  Users, 
+  HelpCircle, 
+  FolderTree, 
+  BarChart3, 
+  FileText, 
+  Settings, 
+  Bell,
+  Stethoscope
+} from 'lucide-react';
 
 const Sidebar = () => {
+  const navItems = [
+    { p: '/', label: 'Dashboard', icon: LayoutDashboard },
+    { p: '/users', label: 'Doctors', icon: Users },
+    { p: '/questions', label: 'Question Bank', icon: HelpCircle },
+    { p: '/categories', label: 'Categories', icon: FolderTree },
+    { p: '/analytics', label: 'Analytics', icon: BarChart3 },
+    { p: '/notifications', label: 'Broadcast', icon: Bell },
+    { p: '/reports', label: 'Reports', icon: FileText },
+    { p: '/settings', label: 'Settings', icon: Settings },
+  ];
+
   return (
-    <aside className="sidebar">
+    <div className="sidebar">
       <div className="sidebar-logo">
-        <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '4px' }}>
-          <img src="/logo.png" alt="Logo" style={{ height: '32px', width: 'auto' }} />
+        <div style={{ 
+          width: 40, height: 40, background: 'var(--primary)', borderRadius: '10px',
+          display: 'flex', alignItems: 'center', justifyItems: 'center', justifyContent: 'center',
+          boxShadow: '0 8px 16px rgba(79, 70, 229, 0.4)'
+        }}>
+          <Stethoscope size={24} color="white" />
         </div>
-        <span>Neuro Genius</span>
+        <div className="logo-text">NeuroGenius</div>
       </div>
-      
-      <nav className="nav-links">
-        <NavLink to="/" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-          <LayoutDashboard size={20} />
-          <span>Dashboard</span>
-        </NavLink>
-        <NavLink to="/users" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-          <Users size={20} />
-          <span>User Management</span>
-        </NavLink>
-        <NavLink to="/categories" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-          <FolderTree size={20} />
-          <span>Categories</span>
-        </NavLink>
-        <NavLink to="/questions" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-          <HelpCircle size={20} />
-          <span>Question Bank</span>
-        </NavLink>
-        <NavLink to="/analytics" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-          <BarChart3 size={20} />
-          <span>Analytics</span>
-        </NavLink>
-        <NavLink to="/settings" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-          <Settings size={20} />
-          <span>Settings</span>
-        </NavLink>
+
+      <nav style={{ flex: 1 }}>
+        {navItems.map((item) => (
+          <NavLink 
+            key={item.p} 
+            to={item.p} 
+            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          >
+            <item.icon size={20} />
+            <span>{item.label}</span>
+          </NavLink>
+        ))}
       </nav>
 
-      <div style={{ marginTop: 'auto' }}>
-        <button className="nav-item" style={{ background: 'none', border: 'none', width: '100%', cursor: 'pointer' }}>
-          <LogOut size={20} />
-          <span>Logout</span>
-        </button>
+      <div style={{ 
+        marginTop: 'auto', 
+        padding: '1.5rem', 
+        background: 'rgba(255,255,255,0.03)', 
+        borderRadius: 'var(--radius-md)',
+        border: '1px solid rgba(255,255,255,0.05)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+           <div style={{ width: 40, height: 40, borderRadius: '50%', background: '#4f46e5', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>AD</div>
+           <div>
+              <p style={{ fontSize: '0.875rem', fontWeight: 700 }}>Admin User</p>
+              <p style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Super Admin</p>
+           </div>
+        </div>
       </div>
-    </aside>
+    </div>
   );
 };
 
