@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ScrollView, Alert } from 'react-native';
 import { COLORS, SPACING } from '../theme';
-import axios from 'axios';
+import api from '../services/api';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -10,8 +10,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      // In a real device/emulator, 'localhost' should be '10.0.2.2' for Android or your local IP
-      const response = await axios.post('http://10.0.2.2:3001/api/auth/login', { email, password });
+      const response = await api.post('/auth/login', { email, password });
       // Store token and navigate
       navigation.replace('Home');
     } catch (error) {

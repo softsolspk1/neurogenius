@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { COLORS, SPACING } from '../theme';
 import { Trophy, Home, Share2, RefreshCcw } from 'lucide-react-native';
-import axios from 'axios';
+import api from '../services/api';
 
 const ResultScreen = ({ route, navigation }) => {
   const { score, correctAnswers, totalQuestions, categoryId } = route.params;
@@ -14,8 +14,7 @@ const ResultScreen = ({ route, navigation }) => {
 
   const submitResult = async () => {
     try {
-      // In a real app, you'd get the auth token from storage
-      await axios.post('http://10.0.2.2:3001/api/quiz/submit', {
+      await api.post('/quiz/submit', {
         category_id: categoryId,
         score,
         correct_answers: correctAnswers,

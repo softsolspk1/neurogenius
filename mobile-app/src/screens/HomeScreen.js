@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
 import { COLORS, SPACING } from '../theme';
-import axios from 'axios';
+import api from '../services/api';
 import { Play, Trophy, Users } from 'lucide-react-native';
 
 const HomeScreen = ({ navigation }) => {
@@ -15,7 +15,7 @@ const HomeScreen = ({ navigation }) => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://10.0.2.2:3001/api/questions/categories');
+      const response = await api.get('/questions/categories');
       setCategories(response.data);
     } catch (error) {
       console.error(error);

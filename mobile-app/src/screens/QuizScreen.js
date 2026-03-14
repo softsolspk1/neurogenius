@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, ActivityIndicator, Alert, Animated } from 'react-native';
 import { COLORS, SPACING } from '../theme';
-import axios from 'axios';
+import api from '../services/api';
 import { X } from 'lucide-react-native';
 
 const QuizScreen = ({ route, navigation }) => {
@@ -28,7 +28,7 @@ const QuizScreen = ({ route, navigation }) => {
 
   const fetchQuestions = async () => {
     try {
-      const response = await axios.get(`http://10.0.2.2:3001/api/questions/category/${categoryId}?limit=10`);
+      const response = await api.get(`/questions/category/${categoryId}?limit=10`);
       setQuestions(response.data);
       startTimer();
     } catch (error) {

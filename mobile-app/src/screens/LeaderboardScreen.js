@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, SafeAreaView, ActivityIndicator, Image } from 'react-native';
 import { COLORS, SPACING } from '../theme';
-import axios from 'axios';
+import api from '../services/api';
 import { Trophy, Medal } from 'lucide-react-native';
 
 const LeaderboardScreen = () => {
@@ -15,7 +15,7 @@ const LeaderboardScreen = () => {
 
   const fetchLeaderboard = async () => {
     try {
-      const response = await axios.get('http://10.0.2.2:3001/api/leaderboard');
+      const response = await api.get('/leaderboard');
       setLeaderboard(response.data);
     } catch (error) {
       console.error(error);

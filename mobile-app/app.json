@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "Neuro Genius",
+    "slug": "neuro-genius",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/logo.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./src/assets/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/logo.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.softsols.neurogenius"
+    },
+    "web": {
+      "favicon": "./src/assets/logo.png"
+    }
+  }
+}

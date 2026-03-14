@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
 import { COLORS, SPACING } from '../theme';
-import axios from 'axios';
+import api from '../services/api';
 
 const RegisterScreen = ({ navigation }) => {
   const [formData, setFormData] = useState({
@@ -14,7 +14,7 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post('http://10.0.2.2:3001/api/auth/signup', formData);
+      const response = await api.post('/auth/signup', formData);
       Alert.alert('Success', 'Account created! Please login.', [
         { text: 'OK', onPress: () => navigation.navigate('Login') }
       ]);

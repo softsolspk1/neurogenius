@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, FlatList, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { COLORS, SPACING } from '../theme';
-import io from 'socket.io-client';
+import { BASE_URL } from '../services/api';
 import { User, Play, Copy } from 'lucide-react-native';
 
 const LobbyScreen = ({ route, navigation }) => {
@@ -13,7 +13,7 @@ const LobbyScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     // In emulator, use 10.0.2.2. In real device, use local IP.
-    const newSocket = io('http://10.0.2.2:3001');
+    const newSocket = io(BASE_URL);
     setSocket(newSocket);
 
     newSocket.on('connect', () => {

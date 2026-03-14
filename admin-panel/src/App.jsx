@@ -34,7 +34,10 @@ function App() {
             color: 'var(--text-muted)',
             fontSize: '0.875rem'
           }}>
-            <p>© 2026 Neuro Genius Challenge. All rights reserved.</p>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
+              <img src="https://quiz.healthhandspharmacy.com/zeegap.jpeg" alt="Zeegap" style={{ height: '30px', borderRadius: '4px' }} />
+              <p style={{ margin: 0 }}>© 2026 Neuro Genius Challenge. All rights reserved.</p>
+            </div>
             <p style={{ fontWeight: 700, marginTop: '0.25rem' }}>Developed By Softsols Pakistan</p>
           </footer>
         </main>
