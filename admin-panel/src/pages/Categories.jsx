@@ -1,11 +1,16 @@
 
 import React, { useState, useEffect } from 'react';
 import api from '../api';
-import { Plus, Edit, Trash2, Folder, HelpCircle } from 'lucide-react';
+import { Plus, Edit, Trash2, Folder, HelpCircle, Loader2 } from 'lucide-react';
+import Modal from '../components/Modal';
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editingCategory, setEditingCategory] = useState(null);
+  const [formData, setFormData] = useState({ name: '', description: '' });
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -22,82 +27,161 @@ const Categories = () => {
     }
   };
 
+  const handleOpenModal = (category = null) => {
+    if (category) {
+      setEditingCategory(category);
+      setFormData({ name: category.name, description: category.description || '' });
+    } else {
+      setEditingCategory(null);
+      setFormData({ name: '', description: '' });
+    }
+    setModalOpen(true);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      if (editingCategory) {
+        await api.put(`/api/questions/categories/${editingCategory.id}`, formData);
+      } else {
+        await api.post('/api/questions/categories', formData);
+      }
+      fetchCategories();
+      setModalOpen(false);
+    } catch (error) {
+      console.error('Error saving category:', error);
+      alert('Failed to save category');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this category? All associated questions will need to be reassigned.')) return;
+    try {
+      await api.delete(`/api/questions/categories/${id}`);
+      setCategories(categories.filter(c => c.id !== id));
+    } catch (error) {
+      console.error('Error deleting category:', error);
+      alert('Failed to delete category');
+    }
+  };
+
   return (
-    <div className="categories-page">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+    <div className="categories-page animate-fade-in">
+      <div className="top-bar">
         <h1>Category Management</h1>
-        <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <button className="btn btn-primary" onClick={() => handleOpenModal()}>
           <Plus size={18} /> Add New Category
         </button>
       </div>
 
       <div className="stats-grid">
-         <div className="card stat-card">
-            <div className="stat-icon" style={{ backgroundColor: '#1e40af' }}>
-              <Folder size={24} />
-            </div>
-            <div className="stat-info">
-              <h3>Total Categories</h3>
-              <p>{categories.length}</p>
-            </div>
+         <div className="card stat-card" style={{ color: 'var(--primary)' }}>
+            <div className="stat-label">Total Categories</div>
+            <div className="stat-value">{categories.length}</div>
+            <Folder size={24} style={{ position: 'absolute', right: '1.5rem', top: '1.5rem', opacity: 0.2 }} />
          </div>
-         <div className="card stat-card">
-            <div className="stat-icon" style={{ backgroundColor: '#059669' }}>
-              <HelpCircle size={24} />
-            </div>
-            <div className="stat-info">
-              <h3>Total Questions</h3>
-              <p>{categories.reduce((acc, cat) => acc + parseInt(cat.questionCount), 0)}</p>
-            </div>
+         <div className="card stat-card" style={{ color: 'var(--secondary)' }}>
+            <div className="stat-label">Total Questions</div>
+            <div className="stat-value">{categories.reduce((acc, cat) => acc + parseInt(cat.questionCount || 0), 0)}</div>
+            <HelpCircle size={24} style={{ position: 'absolute', right: '1.5rem', top: '1.5rem', opacity: 0.2 }} />
          </div>
       </div>
 
-      <div className="card" style={{ padding: '0' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr>
-              <th style={{ padding: '1rem' }}>Category Name</th>
-              <th style={{ padding: '1rem' }}>Icon / Description</th>
-              <th style={{ padding: '1rem' }}>Questions Count</th>
-              <th style={{ padding: '1rem' }}>Status</th>
-              <th style={{ padding: '1rem' }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {categories.map(cat => (
-              <tr key={cat.id}>
-                <td style={{ padding: '1rem', fontWeight: '600' }}>{cat.name}</td>
-                <td style={{ padding: '1rem', color: '#64748b', fontSize: '0.875rem' }}>
-                  Medical category for {cat.name} questions.
-                </td>
-                <td style={{ padding: '1rem', fontWeight: '700', color: '#1e40af' }}>{cat.questionCount}</td>
-                <td style={{ padding: '1rem' }}>
-                  <span style={{ 
-                    padding: '0.25rem 0.75rem', 
-                    borderRadius: '1rem', 
-                    fontSize: '0.75rem', 
-                    fontWeight: '600',
-                    backgroundColor: '#dcfce7',
-                    color: '#166534'
-                  }}>
-                    ACTIVE
-                  </span>
-                </td>
-                <td style={{ padding: '1rem' }}>
-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <button title="Edit" style={{ padding: '0.5rem', borderRadius: '0.4rem', border: '1px solid #e2e8f0', background: 'white' }}>
-                      <Edit size={16} />
-                    </button>
-                    <button title="Delete" style={{ padding: '0.5rem', borderRadius: '0.4rem', border: '1px solid #e2e8f0', background: 'white', color: '#ef4444' }}>
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
-                </td>
+      <div className="card" style={{ padding: '0', overflow: 'hidden' }}>
+        {loading ? (
+          <div style={{ padding: '4rem', textAlign: 'center' }}>
+            <Loader2 className="animate-spin" size={32} style={{ margin: '0 auto 1rem', color: 'var(--primary)' }} />
+            <p className="text-muted">Loading categories...</p>
+          </div>
+        ) : (
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ background: '#f8fafc' }}>
+                <th style={{ padding: '1.25rem' }}>Category Name</th>
+                <th style={{ padding: '1.25rem' }}>Description</th>
+                <th style={{ padding: '1.25rem' }}>Questions</th>
+                <th style={{ padding: '1.25rem' }}>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {categories.map(cat => (
+                <tr key={cat.id}>
+                  <td style={{ padding: '1.25rem', fontWeight: '700', color: 'var(--primary)' }}>{cat.name}</td>
+                  <td style={{ padding: '1.25rem', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+                    {cat.description || `Medical topics related to ${cat.name}`}
+                  </td>
+                  <td style={{ padding: '1.25rem' }}>
+                    <span style={{ 
+                      padding: '0.25rem 0.75rem', 
+                      borderRadius: '1rem', 
+                      fontSize: '0.875rem', 
+                      fontWeight: '700',
+                      backgroundColor: '#eff6ff',
+                      color: 'var(--primary)'
+                    }}>
+                      {cat.questionCount} Qs
+                    </span>
+                  </td>
+                  <td style={{ padding: '1.25rem' }}>
+                    <div style={{ display: 'flex', gap: '0.75rem' }}>
+                      <button 
+                        onClick={() => handleOpenModal(cat)}
+                        className="btn" 
+                        style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'white' }}
+                      >
+                        <Edit size={16} />
+                      </button>
+                      <button 
+                        onClick={() => handleDelete(cat.id)}
+                        className="btn" 
+                        style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'white', color: '#ef4444' }}
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
+
+      <Modal 
+        isOpen={modalOpen} 
+        onClose={() => setModalOpen(false)} 
+        title={editingCategory ? 'Edit Category' : 'Add New Category'}
+      >
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label className="label">Category Name</label>
+            <input 
+              className="input" 
+              required
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              placeholder="e.g. Neuroanatomy"
+            />
+          </div>
+          <div className="form-group">
+            <label className="label">Description</label>
+            <textarea 
+              className="input" 
+              rows="4"
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              placeholder="Brief overview of the category topics..."
+              style={{ resize: 'none' }}
+            />
+          </div>
+          <button className="btn btn-primary" style={{ width: '100%', marginTop: '1rem' }} disabled={submitting}>
+            {submitting ? 'Saving...' : editingCategory ? 'Update Category' : 'Create Category'}
+          </button>
+        </form>
+      </Modal>
     </div>
   );
 };
