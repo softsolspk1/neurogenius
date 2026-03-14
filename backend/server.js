@@ -33,6 +33,10 @@ app.use('/api/settings', settingsRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/quizzes', quizRoutes);
 
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'Backend API is responding!', timestamp: new Date() });
+});
+
 
 
 // Health Check

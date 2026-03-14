@@ -8,7 +8,7 @@ async function populateData() {
   try {
     console.log('Connecting to database and sinking schema...');
     await sequelize.authenticate();
-    await sequelize.sync();
+    await sequelize.sync({ alter: true });
     console.log('Database connected and synced.');
 
     // 0. Ensure all 15 Categories exist
