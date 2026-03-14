@@ -24,6 +24,23 @@ app.set('socketio', io);
 app.use(cors());
 app.use(express.json());
 
+// Lazy-load database connection middleware
+app.use(async (req, res, next) => {
+  try {
+    // Only authenticate once
+    if (!sequelize.is_connected) {
+      await sequelize.authenticate();
+      sequelize.is_connected = true;
+      console.log('Database connected!');
+    }
+    next();
+  } catch (error) {
+    console.error('Database connection error:', error);
+    // Continue anyway to allow non-DB routes to work
+    next();
+  }
+});
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/questions', questionRoutes);
@@ -34,32 +51,17 @@ app.use('/api/stats', statsRoutes);
 app.use('/api/quizzes', quizRoutes);
 
 app.get('/api/test', (req, res) => {
-  res.json({ message: 'Backend API is responding!', timestamp: new Date() });
+  res.json({ 
+    message: 'Backend API is responding!', 
+    timestamp: new Date(),
+    db_connected: !!sequelize.is_connected,
+    env: process.env.NODE_ENV
+  });
 });
-
-
 
 // Health Check
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'Neuro Genius API is running' });
 });
-
-const PORT = process.env.PORT || 3001;
-
-async function startServer() {
-  try {
-    await sequelize.authenticate();
-    console.log('Database connected!');
-    if (process.env.NODE_ENV !== 'test') {
-      server.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
-      });
-    }
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
-}
-
-startServer();
 
 module.exports = app;
