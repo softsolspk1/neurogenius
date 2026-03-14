@@ -4,6 +4,8 @@ const User = require('./User');
 const Category = require('./Category');
 const Question = require('./Question');
 const GameResult = require('./GameResult');
+const Notification = require('./Notification');
+const Settings = require('./Settings');
 
 // Relationships
 Category.hasMany(Question, { foreignKey: 'category_id' });
@@ -20,5 +22,7 @@ module.exports = {
   User,
   Category,
   Question,
-  GameResult
+  GameResult,
+  Notification,
+  Settings
 };

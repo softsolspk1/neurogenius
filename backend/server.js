@@ -6,13 +6,17 @@ const { sequelize } = require('./models');
 
 const authRoutes = require('./routes/authRoutes');
 const questionRoutes = require('./routes/questionRoutes');
+const userRoutes = require('./routes/userRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
+const settingsRoutes = require('./routes/settingsRoutes');
 
 const http = require('http');
 const socketHandler = require('./socketHandler');
 
 const app = express();
 const server = http.createServer(app);
-socketHandler(server);
+const io = socketHandler(server);
+app.set('socketio', io);
 
 // Middleware
 app.use(cors());
@@ -21,6 +25,9 @@ app.use(express.json());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/questions', questionRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/settings', settingsRoutes);
 
 // Quiz & Leaderboard
 const quizController = require('./controllers/quizController');
