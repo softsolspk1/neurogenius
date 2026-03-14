@@ -18,7 +18,7 @@ const Notifications = () => {
   const fetchHistory = async () => {
     try {
       const res = await api.get('/api/notifications');
-      setHistory(res.data);
+      setHistory(res.data.notifications || res.data);
     } catch (err) {
       console.error(err);
     }

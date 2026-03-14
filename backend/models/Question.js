@@ -29,7 +29,12 @@ const Question = sequelize.define('Question', {
     allowNull: false
   },
   subtopic: DataTypes.STRING,
-  reference: DataTypes.TEXT
+  reference: DataTypes.TEXT,
+  image_url: DataTypes.STRING,
+  is_multi_correct: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  }
 }, {
   timestamps: true,
   underscored: true

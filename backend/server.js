@@ -17,6 +17,7 @@ const socketHandler = require('./socketHandler');
 const app = express();
 const server = http.createServer(app);
 const io = socketHandler(server);
+const quizRoutes = require('./routes/quizRoutes');
 app.set('socketio', io);
 
 // Middleware
@@ -30,12 +31,9 @@ app.use('/api/users', userRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/quizzes', quizRoutes);
 
-// Quiz & Leaderboard
-const quizController = require('./controllers/quizController');
-const authMiddleware = require('./middleware/authMiddleware');
-app.get('/api/leaderboard', quizController.getLeaderboard);
-app.post('/api/quiz/submit', authMiddleware, quizController.submitResult);
+
 
 // Health Check
 app.get('/health', (req, res) => {

@@ -28,9 +28,14 @@ const QuizScreen = ({ route, navigation }) => {
 
   const fetchQuestions = async () => {
     try {
-      const response = await api.get(`/questions/category/${categoryId}?limit=10`);
-      setQuestions(response.data);
-      startTimer();
+      if (route.params.questions) {
+        setQuestions(route.params.questions);
+        startTimer();
+      } else {
+        const response = await api.get(`/questions/category/${categoryId}?limit=10`);
+        setQuestions(response.data);
+        startTimer();
+      }
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to load questions');
@@ -86,7 +91,9 @@ const QuizScreen = ({ route, navigation }) => {
       score,
       correctAnswers,
       totalQuestions: questions.length,
-      categoryId
+      categoryId,
+      sessionId: route.params.sessionId,
+      gameMode: route.params.isWardActivity ? 'ward' : (route.params.isMultiplayer ? 'multi' : 'single')
     });
   };
 

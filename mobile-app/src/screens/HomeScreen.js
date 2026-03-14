@@ -3,20 +3,25 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
 import { COLORS, SPACING } from '../theme';
 import api from '../services/api';
-import { Play, Trophy, Users } from 'lucide-react-native';
+import { Play, Trophy, Users, Bell, Hash } from 'lucide-react-native';
 
 const HomeScreen = ({ navigation }) => {
   const [categories, setCategories] = useState([]);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchCategories();
+    fetchData();
   }, []);
 
-  const fetchCategories = async () => {
+  const fetchData = async () => {
     try {
-      const response = await api.get('/questions/categories');
-      setCategories(response.data);
+      const [catRes, userRes] = await Promise.all([
+        api.get('/questions/categories'),
+        api.get('/users/profile')
+      ]);
+      setCategories(catRes.data);
+      setUser(userRes.data);
     } catch (error) {
       console.error(error);
     } finally {
@@ -41,12 +46,22 @@ const HomeScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View>
-          <Text style={styles.welcomeText}>Hello, Doctor!</Text>
-          <Text style={styles.subtitle}>Ready for today's challenge?</Text>
+          <Text style={styles.welcomeText}>Hello, {user?.name || 'Doctor'}!</Text>
+          <View style={styles.badgeContainer}>
+             <View style={styles.levelBadge}>
+                <Text style={styles.levelText}>Lvl {user?.level || 1}</Text>
+             </View>
+             <Text style={styles.pointsText}>{user?.points || 0} pts</Text>
+          </View>
         </View>
-        <TouchableOpacity style={styles.trophyButton} onPress={() => navigation.navigate('Leaderboard')}>
-           <Trophy color={COLORS.white} size={20} />
-        </TouchableOpacity>
+        <View style={styles.headerRight}>
+          <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('Notifications')}>
+             <Bell color={COLORS.primary} size={24} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.trophyButton} onPress={() => navigation.navigate('Leaderboard')}>
+             <Trophy color={COLORS.white} size={20} />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.mainGrid}>
@@ -57,9 +72,12 @@ const HomeScreen = ({ navigation }) => {
            <Users color={COLORS.white} size={32} />
            <Text style={styles.modeText}>Multiplayer</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.modeCard, { backgroundColor: COLORS.secondary }]}>
-           <Play color={COLORS.white} size={32} />
-           <Text style={styles.modeText}>Daily Quiz</Text>
+        <TouchableOpacity 
+          style={[styles.modeCard, { backgroundColor: COLORS.accent }]}
+          onPress={() => navigation.navigate('WardActivity')}
+        >
+           <Hash color={COLORS.white} size={32} />
+           <Text style={styles.modeText}>Ward Activity</Text>
         </TouchableOpacity>
       </View>
 
@@ -91,7 +109,12 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.border
   },
   welcomeText: { fontSize: 20, fontWeight: '700', color: COLORS.text },
-  subtitle: { fontSize: 14, color: COLORS.textMuted },
+  badgeContainer: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 4 },
+  levelBadge: { backgroundColor: COLORS.primary, paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4 },
+  levelText: { color: COLORS.white, fontSize: 12, fontWeight: '700' },
+  pointsText: { fontSize: 14, color: COLORS.secondary, fontWeight: '600' },
+  headerRight: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  iconButton: { padding: 8, borderRadius: 12, backgroundColor: COLORS.background },
   trophyButton: { backgroundColor: COLORS.accent, padding: 10, borderRadius: 12 },
   mainGrid: { flexDirection: 'row', padding: SPACING.lg, gap: SPACING.md },
   modeCard: { flex: 1, padding: SPACING.lg, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },

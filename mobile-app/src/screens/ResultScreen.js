@@ -6,7 +6,8 @@ import { Trophy, Home, Share2, RefreshCcw } from 'lucide-react-native';
 import api from '../services/api';
 
 const ResultScreen = ({ route, navigation }) => {
-  const { score, correctAnswers, totalQuestions, categoryId } = route.params;
+  const { score, correctAnswers, totalQuestions, categoryId, sessionId, gameMode } = route.params;
+  const [resultData, setResultData] = React.useState(null);
 
   useEffect(() => {
     submitResult();
@@ -14,13 +15,15 @@ const ResultScreen = ({ route, navigation }) => {
 
   const submitResult = async () => {
     try {
-      await api.post('/quiz/submit', {
+      const response = await api.post('/quiz/submit', {
         category_id: categoryId,
         score,
         correct_answers: correctAnswers,
         total_questions: totalQuestions,
-        game_mode: 'single'
+        game_mode: gameMode || 'single',
+        session_id: sessionId
       });
+      setResultData(response.data);
     } catch (error) {
       console.error('Failed to submit score:', error);
     }
@@ -39,12 +42,18 @@ const ResultScreen = ({ route, navigation }) => {
         <View style={styles.scoreBoard}>
           <View style={styles.scoreItem}>
              <Text style={styles.scoreLabel}>Score</Text>
-             <Text style={styles.scoreValue}>{score}</Text>
+             <Text style={styles.scoreValue}>+{score}</Text>
           </View>
           <View style={[styles.scoreItem, { borderLeftWidth: 1, borderLeftColor: COLORS.border }]}>
              <Text style={styles.scoreLabel}>Correct</Text>
              <Text style={styles.scoreValue}>{correctAnswers}/{totalQuestions}</Text>
           </View>
+          {resultData && (
+            <View style={[styles.scoreItem, { borderLeftWidth: 1, borderLeftColor: COLORS.border }]}>
+               <Text style={styles.scoreLabel}>New Level</Text>
+               <Text style={[styles.scoreValue, { color: COLORS.secondary }]}>{resultData.level}</Text>
+            </View>
+          )}
         </View>
 
         <View style={styles.buttonGroup}>

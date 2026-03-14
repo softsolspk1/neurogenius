@@ -5,8 +5,8 @@ const sequelize = require('../config/database');
 const Notification = sequelize.define('Notification', {
   id: {
     type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+    autoIncrement: true,
+    primaryKey: true
   },
   title: {
     type: DataTypes.STRING,
@@ -17,17 +17,20 @@ const Notification = sequelize.define('Notification', {
     allowNull: false
   },
   type: {
-    type: DataTypes.STRING, // 'info', 'warning', 'success', 'broadcast'
-    defaultValue: 'info'
+    type: DataTypes.ENUM('announcement', 'alert', 'reward'),
+    defaultValue: 'announcement'
   },
-  isAdminOnly: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false
-  },
-  createdBy: {
+  target_user_id: {
     type: DataTypes.INTEGER,
-    allowNull: true
+    allowNull: true // Null for global/broadcast
+  },
+  sent_at: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
   }
+}, {
+  timestamps: true,
+  underscored: true
 });
 
 module.exports = Notification;

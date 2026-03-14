@@ -9,6 +9,7 @@ import Analytics from './pages/Analytics';
 import Categories from './pages/Categories';
 import Settings from './pages/Settings';
 import Notifications from './pages/Notifications';
+import Quizzes from './pages/Quizzes';
 import Sidebar from './components/Sidebar';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route path="/questions" element={<Questions />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/categories" element={<Categories />} />
+            <Route path="/quizzes" element={<Quizzes />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/settings" element={<Settings />} />
           </Routes>

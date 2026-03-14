@@ -5,6 +5,7 @@ const Category = require('./Category');
 const Question = require('./Question');
 const GameResult = require('./GameResult');
 const Notification = require('./Notification');
+const QuizSession = require('./QuizSession');
 const Settings = require('./Settings');
 
 // Relationships
@@ -17,6 +18,9 @@ GameResult.belongsTo(User, { foreignKey: 'user_id' });
 Category.hasMany(GameResult, { foreignKey: 'category_id' });
 GameResult.belongsTo(Category, { foreignKey: 'category_id' });
 
+Category.hasMany(QuizSession, { foreignKey: 'category_id' });
+QuizSession.belongsTo(Category, { foreignKey: 'category_id' });
+
 module.exports = {
   sequelize,
   User,
@@ -24,5 +28,6 @@ module.exports = {
   Question,
   GameResult,
   Notification,
+  QuizSession,
   Settings
 };

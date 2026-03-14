@@ -38,7 +38,16 @@ const User = sequelize.define('User', {
   role: {
     type: DataTypes.ENUM('doctor', 'admin'),
     defaultValue: 'doctor'
-  }
+  },
+  level: {
+    type: DataTypes.INTEGER,
+    defaultValue: 1
+  },
+  exp_points: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  avatar_url: DataTypes.STRING
 }, {
   timestamps: true,
   underscored: true

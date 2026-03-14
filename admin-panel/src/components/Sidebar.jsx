@@ -20,6 +20,7 @@ const Sidebar = () => {
     { p: '/questions', label: 'Question Bank', icon: HelpCircle },
     { p: '/categories', label: 'Categories', icon: FolderTree },
     { p: '/analytics', label: 'Analytics', icon: BarChart3 },
+    { p: '/quizzes', label: 'Ward Activities', icon: Stethoscope },
     { p: '/notifications', label: 'Broadcast', icon: Bell },
     { p: '/reports', label: 'Reports', icon: FileText },
     { p: '/settings', label: 'Settings', icon: Settings },
