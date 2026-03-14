@@ -33,11 +33,11 @@ const NotificationsScreen = () => {
         <View style={[styles.iconContainer, { backgroundColor: iconColor + '20' }]}>
           <Icon color={iconColor} size={24} />
         </View>
-        <div style={styles.textContainer}>
+        <View style={styles.textContainer}>
           <Text style={styles.notifTitle}>{item.title}</Text>
           <Text style={styles.notifMessage}>{item.message}</Text>
           <Text style={styles.notifTime}>{new Date(item.sent_at).toLocaleDateString()}</Text>
-        </div>
+        </View>
       </View>
     );
   };
