@@ -13,10 +13,10 @@ if (!dbUrl) {
 const sequelize = new Sequelize(dbUrl || 'postgres://localhost:5432/placeholder', {
   dialect: 'postgres',
   dialectOptions: {
-    ssl: {
+    ssl: process.env.NODE_ENV === 'production' ? {
       require: true,
       rejectUnauthorized: false
-    }
+    } : false // Disable SSL in development
   },
   pool: {
     max: 2,
