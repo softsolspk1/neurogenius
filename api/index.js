@@ -1,8 +1,8 @@
-// Force inclusion of PostgreSQL driver for Vercel bundler
 try {
   require('pg');
+  require('pg-hstore');
 } catch (e) {
-  console.warn('pg load failed early', e.message);
+  console.warn('pg driver load failed early', e.message);
 }
 
 let app;
