@@ -26,6 +26,17 @@ function App() {
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/settings" element={<Settings />} />
           </Routes>
+          <footer style={{ 
+            marginTop: '4rem', 
+            padding: '2rem 0', 
+            borderTop: '1px solid var(--border)', 
+            textAlign: 'center',
+            color: 'var(--text-muted)',
+            fontSize: '0.875rem'
+          }}>
+            <p>© 2026 Neuro Genius Challenge. All rights reserved.</p>
+            <p style={{ fontWeight: 700, marginTop: '0.25rem' }}>Developed By Softsols Pakistan</p>
+          </footer>
         </main>
       </div>
     </Router>

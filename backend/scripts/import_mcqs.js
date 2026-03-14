@@ -5,7 +5,15 @@ const { Category, Question, sequelize } = require('../models/index');
 
 async function importMCQs() {
   try {
+    console.log('Connecting to database and sinking schema...');
+    await sequelize.authenticate();
+    await sequelize.sync();
+    console.log('Database connected and synced.');
+
     console.log('Reading mcqs.html...');
+    if (!fs.existsSync('c:/Users/softs/Desktop/Neurogenious/mcqs.html')) {
+        throw new Error('mcqs.html not found at expected path');
+    }
     const content = fs.readFileSync('c:/Users/softs/Desktop/Neurogenious/mcqs.html', 'utf8');
     const $ = cheerio.load(content);
 

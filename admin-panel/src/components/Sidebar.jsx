@@ -28,13 +28,11 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="sidebar-logo">
-        <div style={{ 
-          width: 40, height: 40, background: 'var(--primary)', borderRadius: '10px',
-          display: 'flex', alignItems: 'center', justifyItems: 'center', justifyContent: 'center',
-          boxShadow: '0 8px 16px rgba(79, 70, 229, 0.4)'
-        }}>
-          <Stethoscope size={24} color="white" />
-        </div>
+        <img 
+          src="https://quiz.healthhandspharmacy.com/logo.png" 
+          alt="Logo" 
+          style={{ width: '40px', height: '40px', objectFit: 'contain' }} 
+        />
         <div className="logo-text">NeuroGenius</div>
       </div>
 
