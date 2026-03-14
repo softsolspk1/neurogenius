@@ -18,6 +18,12 @@ const sequelize = new Sequelize(dbUrl || 'postgres://localhost:5432/placeholder'
       rejectUnauthorized: false
     }
   },
+  pool: {
+    max: 2,
+    min: 0,
+    idle: 10000,
+    acquire: 30000
+  },
   logging: false
 });
 
