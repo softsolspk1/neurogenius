@@ -39,12 +39,16 @@ async function startServer() {
   try {
     await sequelize.authenticate();
     console.log('Database connected!');
-    server.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
+    if (process.env.NODE_ENV !== 'test') {
+      server.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+      });
+    }
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }
 }
 
 startServer();
+
+module.exports = app;

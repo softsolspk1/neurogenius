@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { Users, CheckCircle, HelpCircle, Trophy } from 'lucide-react';
 
 const Dashboard = () => {
@@ -16,7 +16,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('/api/questions/categories');
+        const response = await api.get('/api/questions/categories');
         setCategories(response.data);
         // Update total questions from the sum of categories if possible
         const total = response.data.reduce((acc, cat) => acc + parseInt(cat.questionCount), 0);

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { Search, Filter, Plus, Edit, Trash2, ArrowRight } from 'lucide-react';
 
 const Questions = () => {
@@ -12,8 +12,8 @@ const Questions = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const catRes = await axios.get('/api/questions/categories');
-        setCategories(catRes.res.data);
+        const catRes = await api.get('/api/questions/categories');
+        setCategories(catRes.data);
         if (catRes.data.length > 0) {
           setSelectedCategory(catRes.data[0].id);
         }
@@ -27,7 +27,7 @@ const Questions = () => {
       const fetchQuestions = async () => {
         setLoading(true);
         try {
-          const res = await axios.get(`/api/questions/category/${selectedCategory}?limit=20`);
+          const res = await api.get(`/api/questions/category/${selectedCategory}?limit=20`);
           setQuestions(res.data);
         } catch (err) { console.error(err); }
         setLoading(false);

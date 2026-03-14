@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { Search, UserCheck, UserMinus, Shield } from 'lucide-react';
 
 const Users = () => {
