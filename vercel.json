@@ -20,7 +20,15 @@
       "destination": "api/index.js"
     },
     {
-      "source": "/((?!api/|assets/|favicon.ico).*)",
+      "source": "/assets/(.*)",
+      "destination": "/admin-panel/assets/$1"
+    },
+    {
+      "source": "/favicon.ico",
+      "destination": "/admin-panel/favicon.ico"
+    },
+    {
+      "source": "/((?!api/).*)",
       "destination": "/admin-panel/$1"
     }
   ]
