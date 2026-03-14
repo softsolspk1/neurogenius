@@ -4,14 +4,14 @@ const questionController = require('../controllers/questionController');
 const { authenticateToken, isAdmin } = require('../middleware/authMiddleware');
 
 router.get('/categories', questionController.getCategories);
-router.post('/categories', authMiddleware, questionController.createCategory);
-router.put('/categories/:id', authMiddleware, questionController.updateCategory);
-router.delete('/categories/:id', authMiddleware, questionController.deleteCategory);
+router.post('/categories', authenticateToken, questionController.createCategory);
+router.put('/categories/:id', authenticateToken, questionController.updateCategory);
+router.delete('/categories/:id', authenticateToken, questionController.deleteCategory);
 
 router.get('/', questionController.getQuestions);
-router.post('/', authMiddleware, questionController.createQuestion);
-router.put('/:id', authMiddleware, questionController.updateQuestion);
-router.delete('/:id', authMiddleware, questionController.deleteQuestion);
+router.post('/', authenticateToken, questionController.createQuestion);
+router.put('/:id', authenticateToken, questionController.updateQuestion);
+router.delete('/:id', authenticateToken, questionController.deleteQuestion);
 
 router.get('/category/:categoryId', questionController.getQuestionsByCategory);
 

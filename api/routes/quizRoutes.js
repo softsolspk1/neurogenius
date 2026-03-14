@@ -9,6 +9,6 @@ router.get('/join/:pin', authenticateToken, quizController.joinSession);
 router.get('/active', authenticateToken, quizController.getActiveSessions);
 
 router.get('/leaderboard', quizController.getLeaderboard);
-router.post('/submit', auth, quizController.submitResult);
+router.post('/submit', authenticateToken, quizController.submitResult);
 
 module.exports = router;
