@@ -1,0 +1,15 @@
+
+{
+  "name": "neuro-genius",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "admin-panel",
+    "mobile-app"
+  ],
+  "scripts": {
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:admin": "npm run dev --prefix admin-panel",
+    "build:admin": "npm run build --prefix admin-panel"
+  }
+}
