@@ -5,6 +5,9 @@ import Dashboard from './pages/Dashboard';
 import Users from './pages/Users';
 import Questions from './pages/Questions';
 import Reports from './pages/Reports';
+import Analytics from './pages/Analytics';
+import Categories from './pages/Categories';
+import Settings from './pages/Settings';
 import Sidebar from './components/Sidebar';
 
 function App() {
@@ -17,9 +20,9 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/users" element={<Users />} />
             <Route path="/questions" element={<Questions />} />
-            <Route path="/analytics" element={<Reports />} />
-            <Route path="/categories" element={<div><h1>Categories Management</h1><p>Feature coming soon...</p></div>} />
-            <Route path="/settings" element={<div><h1>Settings</h1><p>Feature coming soon...</p></div>} />
+            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/categories" element={<Categories />} />
+            <Route path="/settings" element={<Settings />} />
           </Routes>
         </main>
       </div>

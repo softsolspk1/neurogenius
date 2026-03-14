@@ -23,17 +23,18 @@ const Questions = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedCategory) {
-      const fetchQuestions = async () => {
-        setLoading(true);
-        try {
-          const res = await api.get(`/api/questions/category/${selectedCategory}?limit=20`);
-          setQuestions(res.data);
-        } catch (err) { console.error(err); }
-        setLoading(false);
-      };
-      fetchQuestions();
-    }
+    const fetchQuestions = async () => {
+      setLoading(true);
+      try {
+        const url = selectedCategory 
+          ? `/api/questions/category/${selectedCategory}?limit=50`
+          : `/api/questions/category/1?limit=50`; // Default to first for preview if none
+        const res = await api.get(url);
+        setQuestions(res.data);
+      } catch (err) { console.error(err); }
+      setLoading(false);
+    };
+    fetchQuestions();
   }, [selectedCategory]);
 
   return (
@@ -54,7 +55,7 @@ const Questions = () => {
             <Search style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#64748b' }} size={18} />
             <input 
               type="text" 
-              placeholder="Search by question text..." 
+              placeholder="Search 10,000+ questions..." 
               style={{ width: '100%', padding: '0.75rem 1rem 0.75rem 2.5rem', borderRadius: '0.5rem', border: '1px solid #e2e8f0' }}
             />
          </div>
@@ -63,10 +64,15 @@ const Questions = () => {
            onChange={(e) => setSelectedCategory(e.target.value)}
            style={{ padding: '0.75rem 1rem', borderRadius: '0.5rem', border: '1px solid #e2e8f0', minWidth: '200px' }}
          >
+           <option value="">All Categories</option>
            {categories.map(cat => (
              <option key={cat.id} value={cat.id}>{cat.name} ({cat.questionCount})</option>
            ))}
          </select>
+      </div>
+
+      <div style={{ marginBottom: '1rem', color: '#64748b', fontSize: '0.875rem' }}>
+         Showing top {questions.length} results for the selected filter.
       </div>
 
       {loading ? (
