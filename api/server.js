@@ -55,12 +55,25 @@ app.use('/api/settings', settingsRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/quizzes', quizRoutes);
 
-app.get('/api/test', (req, res) => {
+app.get('/api/test', async (req, res) => {
+  let db_connected = false;
+  let db_error = null;
+  try {
+    const { sequelize } = require('./models');
+    await sequelize.authenticate();
+    db_connected = true;
+  } catch (error) {
+    console.error('Database connection test failed:', error.message);
+    db_error = error.message;
+  }
+  
   res.json({ 
     message: 'Backend API is responding!', 
-    timestamp: new Date(),
-    db_connected: !!sequelize.is_connected,
-    env: process.env.NODE_ENV
+    timestamp: new Date().toISOString(),
+    db_connected,
+    db_error,
+    redacted_url: process.env.DATABASE_URL ? process.env.DATABASE_URL.replace(/:[^:@/]+@/, ':***@') : 'MISSING',
+    env: process.env.NODE_ENV || 'development'
   });
 });
 
