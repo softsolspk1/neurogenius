@@ -8,6 +8,8 @@ import HomeScreen from '../screens/HomeScreen';
 import QuizScreen from '../screens/QuizScreen';
 import ResultScreen from '../screens/ResultScreen';
 import LeaderboardScreen from '../screens/LeaderboardScreen';
+import MultiplayerScreen from '../screens/MultiplayerScreen';
+import LobbyScreen from '../screens/LobbyScreen';
 
 const Stack = createStackNavigator();
 
@@ -21,6 +23,8 @@ const AppNavigator = () => {
       <Stack.Screen name="Quiz" component={QuizScreen} />
       <Stack.Screen name="Result" component={ResultScreen} />
       <Stack.Screen name="Leaderboard" component={LeaderboardScreen} />
+      <Stack.Screen name="Multiplayer" component={MultiplayerScreen} />
+      <Stack.Screen name="Lobby" component={LobbyScreen} />
     </Stack.Navigator>
   );
 };

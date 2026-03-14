@@ -54,6 +54,15 @@ const QuizScreen = ({ route, navigation }) => {
       setScore(prev => prev + 10);
       setCorrectAnswers(prev => prev + 1);
     }
+    
+    // Multiplayer sync
+    if (route.params.isMultiplayer && route.params.socket) {
+      route.params.socket.emit('submit_answer', { 
+        roomId: route.params.roomId, 
+        isCorrect 
+      });
+    }
+
     handleNext();
   };
 
@@ -68,6 +77,11 @@ const QuizScreen = ({ route, navigation }) => {
 
   const finishQuiz = () => {
     clearInterval(timerRef.current);
+    
+    if (route.params.isMultiplayer && route.params.socket) {
+       // Potentially wait for all players or show final rank
+    }
+
     navigation.replace('Result', {
       score,
       correctAnswers,

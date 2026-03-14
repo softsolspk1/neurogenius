@@ -50,7 +50,10 @@ const HomeScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.mainGrid}>
-        <TouchableOpacity style={[styles.modeCard, { backgroundColor: COLORS.primary }]}>
+        <TouchableOpacity 
+          style={[styles.modeCard, { backgroundColor: COLORS.primary }]}
+          onPress={() => navigation.navigate('Multiplayer')}
+        >
            <Users color={COLORS.white} size={32} />
            <Text style={styles.modeText}>Multiplayer</Text>
         </TouchableOpacity>

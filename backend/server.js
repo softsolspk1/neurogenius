@@ -7,7 +7,12 @@ const { sequelize } = require('./models');
 const authRoutes = require('./routes/authRoutes');
 const questionRoutes = require('./routes/questionRoutes');
 
+const http = require('http');
+const socketHandler = require('./socketHandler');
+
 const app = express();
+const server = http.createServer(app);
+socketHandler(server);
 
 // Middleware
 app.use(cors());
@@ -34,7 +39,7 @@ async function startServer() {
   try {
     await sequelize.authenticate();
     console.log('Database connected!');
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
   } catch (error) {
