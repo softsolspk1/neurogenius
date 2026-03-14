@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
-const { authenticateToken, isAdmin } = require('../middleware/auth');
+const { authenticateToken, isAdmin } = require('../middleware/authMiddleware');
 
 router.get('/', authenticateToken, isAdmin, userController.getAllUsers);
 router.patch('/:id/status', authenticateToken, isAdmin, userController.updateUserStatus);

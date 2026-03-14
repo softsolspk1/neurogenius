@@ -1,8 +1,7 @@
-
 const express = require('express');
 const router = express.Router();
 const questionController = require('../controllers/questionController');
-const authMiddleware = require('../middleware/authMiddleware');
+const { authenticateToken, isAdmin } = require('../middleware/authMiddleware');
 
 router.get('/categories', questionController.getCategories);
 router.post('/categories', authMiddleware, questionController.createCategory);

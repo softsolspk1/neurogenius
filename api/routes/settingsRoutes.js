@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const Settings = require('../models/Settings');
-const { authenticateToken, isAdmin } = require('../middleware/auth');
+const { authenticateToken, isAdmin } = require('../middleware/authMiddleware');
 
 // Get all settings
 router.get('/', async (req, res) => {
