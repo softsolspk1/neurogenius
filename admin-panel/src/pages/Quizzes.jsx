@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Play, Plus, Trash2, Hash, Calendar, Clock } from 'lucide-react';
-import api from '../services/api';
+import api from '../api';
 
 const Quizzes = () => {
   const [sessions, setSessions] = useState([]);
