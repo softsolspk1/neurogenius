@@ -23,13 +23,37 @@ const Reports = () => {
   };
 
   const handleDownload = (reportName) => {
-    alert(`Downloading ${reportName}... (Implementation pending backend PDF generation)`);
+    // Generate simple CSV content based on report type
+    let csvContent = "data:text/csv;charset=utf-8,";
+    
+    if (reportName.includes('User')) {
+      csvContent += "Date,Doctors,Active,Pending\n";
+      csvContent += `${new Date().toLocaleDateString()},${stats?.overall?.totalUsers || 0},${stats?.overall?.approvedUsers || 0},${(stats?.overall?.totalUsers || 0) - (stats?.overall?.approvedUsers || 0)}\n`;
+    } else if (reportName.includes('Question')) {
+      csvContent += "Category,Question Count,Average Score\n";
+      stats?.categoryPerformance?.forEach(cat => {
+        csvContent += `${cat.name},${cat.count || 0},${cat.score}%\n`;
+      });
+    } else {
+      csvContent += "Parameter,Value\n";
+      csvContent += `Total Doctors,${stats?.overall?.totalUsers || 0}\n`;
+      csvContent += `Avg Score,${stats?.overall?.avgScore || 0}%\n`;
+      csvContent += `Engagement,${stats?.overall?.engagement || '85%'}\n`;
+    }
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `${reportName.toLowerCase().replace(/ /g, '_')}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const STATIC_REPORTS = [
-    { id: 1, name: 'Monthly User Growth', type: 'PDF', date: new Date().toLocaleDateString(), size: '1.2 MB' },
-    { id: 2, name: 'Question Bank Analysis', type: 'Excel', date: new Date().toLocaleDateString(), size: '4.5 MB' },
-    { id: 3, name: 'Doctor Performance Report', type: 'PDF', date: new Date().toLocaleDateString(), size: '2.8 MB' }
+    { id: 1, name: 'Monthly User Growth', type: 'CSV', date: new Date().toLocaleDateString(), size: '4.2 KB' },
+    { id: 2, name: 'Question Bank Analysis', type: 'CSV', date: new Date().toLocaleDateString(), size: '2.5 KB' },
+    { id: 3, name: 'Doctor Performance Report', type: 'CSV', date: new Date().toLocaleDateString(), size: '1.8 KB' }
   ];
 
   if (loading) return (

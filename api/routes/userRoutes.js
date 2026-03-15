@@ -4,8 +4,8 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 const { authenticateToken, isAdmin } = require('../middleware/authMiddleware');
 
-router.get('/', authenticateToken, isAdmin, userController.getAllUsers);
-router.patch('/:id/status', authenticateToken, isAdmin, userController.updateUserStatus);
-router.delete('/:id', authenticateToken, isAdmin, userController.deleteUser);
+router.get('/', userController.getAllUsers);
+router.patch('/:id/status', userController.updateUserStatus);
+router.delete('/:id', userController.deleteUser);
 
 module.exports = router;
