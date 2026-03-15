@@ -58,13 +58,17 @@ const Categories = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this category? All associated questions will need to be reassigned.')) return;
+    if (!window.confirm('Are you sure you want to delete this category? All associated questions will also be deleted.')) return;
     try {
+      setLoading(true);
       await api.delete(`/api/questions/categories/${id}`);
-      setCategories(categories.filter(c => c.id !== id));
+      await fetchCategories();
+      alert('Category deleted successfully');
     } catch (error) {
       console.error('Error deleting category:', error);
-      alert('Failed to delete category');
+      alert('Failed to delete category. This might be due to existing references.');
+    } finally {
+      setLoading(false);
     }
   };
 

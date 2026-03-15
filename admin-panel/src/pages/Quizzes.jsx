@@ -20,8 +20,8 @@ const Quizzes = () => {
   const fetchData = async () => {
     try {
       const [sessionsRes, categoriesRes] = await Promise.all([
-        api.get('/quizzes/active'),
-        api.get('/categories')
+        api.get('/api/quizzes/active'),
+        api.get('/api/questions/categories')
       ]);
       setSessions(sessionsRes.data.sessions || []);
       setCategories(categoriesRes.data || []);

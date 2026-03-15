@@ -58,7 +58,7 @@ const Users = () => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      await api.post('/api/auth/register', formData);
+      await api.post('/api/auth/signup', formData);
       setModalOpen(false);
       fetchUsers();
       setFormData({
@@ -204,71 +204,104 @@ const Users = () => {
         onClose={() => setModalOpen(false)} 
         title="Add New Doctor"
       >
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label className="label">Full Name</label>
-            <input 
-              className="input" 
-              required
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="Dr. John Doe"
-            />
-          </div>
-          <div className="form-group">
-            <label className="label">Email Address</label>
-            <input 
-              className="input" 
-              type="email"
-              required
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              placeholder="doctor@example.com"
-            />
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <div className="form-group">
-              <label className="label">Specialty</label>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+            <div className="form-group" style={{ marginBottom: 0 }}>
+              <label className="label">Full Name</label>
               <input 
                 className="input" 
+                required
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                placeholder="Dr. Ahmed"
+              />
+            </div>
+            <div className="form-group" style={{ marginBottom: 0 }}>
+              <label className="label">Email Address</label>
+              <input 
+                className="input" 
+                type="email"
+                required
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                placeholder="doctor@example.com"
+              />
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+            <div className="form-group" style={{ marginBottom: 0 }}>
+              <label className="label">Specialty</label>
+              <select 
+                className="input"
+                required
                 value={formData.specialty}
                 onChange={(e) => setFormData({ ...formData, specialty: e.target.value })}
-                placeholder="Neurology"
-              />
+              >
+                <option value="">Select Specialty</option>
+                <option value="Neurologist">Neurologist</option>
+                <option value="Neurosurgeon">Neurosurgeon</option>
+                <option value="Psychiatrist">Psychiatrist</option>
+              </select>
             </div>
-            <div className="form-group">
+            <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="label">City</label>
-              <input 
-                className="input" 
+              <select 
+                className="input"
+                required
                 value={formData.city}
                 onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                placeholder="New York"
-              />
+              >
+                <option value="">Select City</option>
+                {[
+                  'Abbottabad', 'Ahmedpur East', 'Attock', 'Bahawalnagar', 'Bahawalpur', 'Burewala', 
+                  'Chakwal', 'Chaman', 'Chiniot', 'Chishtian', 'Dera Ghazi Khan', 'Dera Ismail Khan', 
+                  'Faisalabad', 'Ferozewala', 'Gojra', 'Gujranwala', 'Gujrat', 'Hafizabad', 'Hyderabad', 
+                  'Islamabad', 'Jacobabad', 'Jaranwala', 'Jhang', 'Jhelum', 'Kamalia', 'Kamoke', 
+                  'Karachi', 'Kasur', 'Khanewal', 'Khanpur', 'Khuzdar', 'Kohat', 'Kot Addu', 'Lahore', 
+                  'Larkana', 'Layyah', 'Mardan', 'Mianwali', 'Mirpur', 'Mirpur Khas', 'Multan', 
+                  'Murree', 'Muzaffarabad', 'Muzaffargarh', 'Nawabshah', 'Nowshera', 'Okara', 
+                  'Pakpattan', 'Peshawar', 'Quetta', 'Rahim Yar Khan', 'Rawalpindi', 'Sadiqabad', 
+                  'Sahiwal', 'Sambrial', 'Sargodha', 'Sheikhupura', 'Shikarpur', 'Sialkot', 'Sukkur', 
+                  'Swabi', 'Tando Adam', 'Taxila', 'Umerkot', 'Vehari', 'Wah Cantt', 'Wazirabad', 'Zhob'
+                ].sort().map(city => (
+                  <option key={city} value={city}>{city}</option>
+                ))}
+              </select>
             </div>
           </div>
+
           <div className="form-group">
             <label className="label">Hospital / Clinic</label>
             <input 
               className="input" 
               value={formData.hospital}
               onChange={(e) => setFormData({ ...formData, hospital: e.target.value })}
-              placeholder="City General Hospital"
+              placeholder="e.g. CHK"
             />
           </div>
+
           <div className="form-group">
             <label className="label">Temporary Password</label>
-            <input 
-              className="input" 
-              value={formData.password}
-              readOnly
-              style={{ background: '#f8fafc' }}
-            />
+            <div style={{ position: 'relative' }}>
+              <input 
+                className="input" 
+                value={formData.password}
+                readOnly
+                style={{ background: '#f8fafc', paddingRight: '1rem' }}
+              />
+            </div>
             <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
-              Default password is password123. The doctor can change it later.
+              Default password is <strong>password123</strong>. The doctor can change it later.
             </p>
           </div>
-          <button className="btn btn-primary" style={{ width: '100%', marginTop: '1rem' }} disabled={submitting}>
-            {submitting ? 'Saving...' : 'Add Doctor'}
+
+          <button className="btn btn-primary" style={{ height: '48px', marginTop: '0.5rem' }} disabled={submitting}>
+            {submitting ? (
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                <Loader2 size={18} className="animate-spin" /> Saving Account...
+              </div>
+            ) : 'Create Doctor Account'}
           </button>
         </form>
       </Modal>

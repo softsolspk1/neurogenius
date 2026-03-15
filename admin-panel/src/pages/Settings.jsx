@@ -19,6 +19,8 @@ const Settings = () => {
     fetchSettings();
   }, []);
 
+  const [activeTab, setActiveTab] = useState('general');
+
   const fetchSettings = async () => {
     try {
       const response = await api.get('/api/settings');
@@ -51,7 +53,12 @@ const Settings = () => {
     }
   };
 
-  if (loading) return <div style={{ padding: '4rem', textAlign: 'center' }}>Loading system configuration...</div>;
+  if (loading) return (
+    <div style={{ padding: '4rem', textAlign: 'center' }}>
+      <Loader2 size={32} className="animate-spin" style={{ margin: '0 auto 1rem', color: 'var(--primary)' }} />
+      <p className="text-muted">Loading system configuration...</p>
+    </div>
+  );
 
   return (
     <div className="settings-page animate-fade-in">
@@ -69,16 +76,16 @@ const Settings = () => {
 
       <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: '2rem' }}>
          <div className="card glass-card" style={{ padding: '0.75rem', height: 'fit-content' }}>
-            <div className="settings-nav-item active">
+            <div className={`settings-nav-item ${activeTab === 'general' ? 'active' : ''}`} onClick={() => setActiveTab('general')}>
                <SettingsIcon size={20} /> <span style={{ fontWeight: '600' }}>General Branding</span>
             </div>
-            <div className="settings-nav-item">
+            <div className={`settings-nav-item ${activeTab === 'scoring' ? 'active' : ''}`} onClick={() => setActiveTab('scoring')}>
                <Percent size={20} /> <span style={{ fontWeight: '600' }}>Scoring & Game Logic</span>
             </div>
-            <div className="settings-nav-item">
+            <div className={`settings-nav-item ${activeTab === 'access' ? 'active' : ''}`} onClick={() => setActiveTab('access')}>
                <Shield size={20} /> <span style={{ fontWeight: '600' }}>Access Control</span>
             </div>
-            <div className="settings-nav-item">
+            <div className={`settings-nav-item ${activeTab === 'notifications' ? 'active' : ''}`} onClick={() => setActiveTab('notifications')}>
                <Mail size={20} /> <span style={{ fontWeight: '600' }}>Notification Templates</span>
             </div>
          </div>
@@ -95,40 +102,58 @@ const Settings = () => {
               </div>
             )}
 
-            <div style={{ marginBottom: '3rem' }}>
-              <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', color: 'var(--primary)' }}>Application Identity</h2>
-              <div className="form-grid">
-                 <div className="form-group">
-                    <label className="label">Application Name</label>
-                    <input type="text" name="appName" className="input" value={settings.appName} onChange={handleChange} />
-                 </div>
-                 <div className="form-group">
-                    <label className="label">Support Email Address</label>
-                    <input type="email" name="supportEmail" className="input" value={settings.supportEmail} onChange={handleChange} />
-                 </div>
+            {activeTab === 'general' && (
+              <div className="animate-fade-in">
+                <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', color: 'var(--primary)' }}>Application Identity</h2>
+                <div className="form-grid">
+                   <div className="form-group">
+                      <label className="label">Application Name</label>
+                      <input type="text" name="appName" className="input" value={settings.appName} onChange={handleChange} />
+                   </div>
+                   <div className="form-group">
+                      <label className="label">Support Email Address</label>
+                      <input type="email" name="supportEmail" className="input" value={settings.supportEmail} onChange={handleChange} />
+                   </div>
+                </div>
               </div>
-            </div>
+            )}
 
-            <div style={{ marginBottom: '3rem' }}>
-              <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', color: 'var(--primary)' }}>Quiz Configuration</h2>
-              <div className="form-grid">
-                 <div className="form-group">
-                    <label className="label">Points Per Correct Answer</label>
-                    <input type="number" name="pointsPerCorrect" className="input" value={settings.pointsPerCorrect} onChange={handleChange} />
-                 </div>
-                 <div className="form-group">
-                    <label className="label">Quiz Question Timer (Sec)</label>
-                    <input type="number" name="quizTimer" className="input" value={settings.quizTimer} onChange={handleChange} />
-                 </div>
-                 <div className="form-group">
-                    <label className="label">Multiplayer Enabled</label>
-                    <select name="enableMultiplayer" className="input" value={settings.enableMultiplayer} onChange={handleChange}>
-                       <option value="true">YES - Enable Live Rooms</option>
-                       <option value="false">NO - Maintain Local Only</option>
-                    </select>
-                 </div>
+            {activeTab === 'scoring' && (
+              <div className="animate-fade-in">
+                <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', color: 'var(--primary)' }}>Quiz Configuration</h2>
+                <div className="form-grid">
+                   <div className="form-group">
+                      <label className="label">Points Per Correct Answer</label>
+                      <input type="number" name="pointsPerCorrect" className="input" value={settings.pointsPerCorrect} onChange={handleChange} />
+                   </div>
+                   <div className="form-group">
+                      <label className="label">Quiz Question Timer (Sec)</label>
+                      <input type="number" name="quizTimer" className="input" value={settings.quizTimer} onChange={handleChange} />
+                   </div>
+                   <div className="form-group">
+                      <label className="label">Multiplayer Enabled</label>
+                      <select name="enableMultiplayer" className="input" value={settings.enableMultiplayer} onChange={handleChange}>
+                         <option value="true">YES - Enable Live Rooms</option>
+                         <option value="false">NO - Maintain Local Only</option>
+                      </select>
+                   </div>
+                </div>
               </div>
-            </div>
+            )}
+
+            {activeTab === 'access' && (
+               <div className="animate-fade-in" style={{ textAlign: 'center', padding: '4rem' }}>
+                  <Shield size={48} style={{ color: 'var(--primary)', opacity: 0.2, marginBottom: '1rem' }} />
+                  <p className="text-muted">Access control policies are managed by Super Admin.</p>
+               </div>
+            )}
+
+            {activeTab === 'notifications' && (
+               <div className="animate-fade-in" style={{ textAlign: 'center', padding: '4rem' }}>
+                  <Bell size={48} style={{ color: 'var(--primary)', opacity: 0.2, marginBottom: '1rem' }} />
+                  <p className="text-muted">Automated notification templates reaching 5,200+ doctors.</p>
+               </div>
+            )}
          </div>
       </div>
 

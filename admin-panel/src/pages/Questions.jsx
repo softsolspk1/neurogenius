@@ -30,7 +30,10 @@ const Questions = () => {
   }, []);
 
   useEffect(() => {
-    fetchQuestions();
+    const timer = setTimeout(() => {
+      fetchQuestions();
+    }, 500);
+    return () => clearTimeout(timer);
   }, [page, selectedCategory, search]);
 
   const fetchCategories = async () => {
@@ -100,11 +103,18 @@ const Questions = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Delete this question permanently?')) return;
+    if (!window.confirm('Are you sure you want to delete this question permanently?')) return;
     try {
+      setSubmitting(true);
       await api.delete(`/api/questions/${id}`);
+      alert('Question deleted successfully');
       fetchQuestions();
-    } catch (err) { console.error(err); }
+    } catch (err) { 
+      console.error(err);
+      alert('Failed to delete question');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleOptionChange = (index, value) => {
