@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import api from '../api';
-import { Settings as SettingsIcon, Shield, Mail, Bell, Percent, Save, RotateCcw, CheckCircle } from 'lucide-react';
+import { Settings as SettingsIcon, Shield, Mail, Bell, Percent, Save, RotateCcw, CheckCircle, Loader2 } from 'lucide-react';
 
 const Settings = () => {
   const [settings, setSettings] = useState({
