@@ -42,8 +42,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "ba4ea61a-3c41-455b-b78b-5575c621e76a"
+        "projectId": "5174bad6-15fd-4ee8-9622-9a1ef573520c"
       }
-    }
+    },
+    "owner": "softsols123"
   }
 }
