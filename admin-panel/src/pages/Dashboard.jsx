@@ -45,7 +45,7 @@ const Dashboard = () => {
     <div className="dashboard animate-fade-in">
       <div className="top-bar">
         <h1>Dashboard Overview</h1>
-        <p className="text-muted" style={{ marginTop: '-1rem' }}>Real-time system health and doctor activity</p>
+        <p className="text-muted" style={{ marginTop: '-1rem' }}>Real Time Quiz Activity</p>
       </div>
       
       <div className="stats-grid">

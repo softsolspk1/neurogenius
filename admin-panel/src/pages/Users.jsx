@@ -256,16 +256,15 @@ const Users = () => {
                 {[
                   'Abbottabad', 'Ahmedpur East', 'Attock', 'Bahawalnagar', 'Bahawalpur', 'Burewala', 
                   'Chakwal', 'Chaman', 'Chiniot', 'Chishtian', 'Dera Ghazi Khan', 'Dera Ismail Khan', 
-                  'Faisalabad', 'Ferozewala', 'Gojra', 'Gujranwala', 'Gujrat', 'Hafizabad', 'Hyderabad', 
-                  'Islamabad', 'Jacobabad', 'Jaranwala', 'Jhang', 'Jhelum', 'Kamalia', 'Kamoke', 
-                  'Karachi', 'Kasur', 'Khanewal', 'Khanpur', 'Khuzdar', 'Kohat', 'Kot Addu', 'Lahore', 
-                  'Larkana', 'Layyah', 'Mardan', 'Mianwali', 'Mirpur', 'Mirpur Khas', 'Multan', 
-                  'Murree', 'Muzaffarabad', 'Muzaffargarh', 'Nawabshah', 'Nowshera', 'Okara', 
-                  'Pakpattan', 'Peshawar', 'Quetta', 'Rahim Yar Khan', 'Rawalpindi', 'Sadiqabad', 
-                  'Sahiwal', 'Sambrial', 'Sargodha', 'Sheikhupura', 'Shikarpur', 'Sialkot', 'Sukkur', 
-                  'Swabi', 'Tando Adam', 'Taxila', 'Umerkot', 'Vehari', 'Wah Cantt', 'Wazirabad', 'Zhob',
-                  'Peshawar', 'Quetta', 'Sukkur', 'Larkana', 'Mardan', 'Gujranwala', 'Sialkot', 'Faisalabad'
-                ].sort().filter((v, i, a) => a.indexOf(v) === i).map(city => (
+                  'Faisalabad', 'Ferozewala', 'Gojra', 'Gujranwala', 'Gujrat', 'Hafizabad', 'Haripur',
+                  'Hub', 'Hyderabad', 'Islamabad', 'Jacobabad', 'Jaranwala', 'Jhang', 'Jhelum', 
+                  'Kamalia', 'Kamoke', 'Karachi', 'Kasur', 'Kharan', 'Khanewal', 'Khanpur', 'Khuzdar', 
+                  'Kohat', 'Kot Addu', 'Lahore', 'Larkana', 'Layyah', 'Mardan', 'Mianwali', 'Mirpur', 
+                  'Mirpur Khas', 'Multan', 'Murree', 'Muzaffarabad', 'Muzaffargarh', 'Nawabshah', 
+                  'Nowshera', 'Okara', 'Pakpattan', 'Peshawar', 'Quetta', 'Rahim Yar Khan', 'Rawalpindi', 
+                  'Sadiqabad', 'Sahiwal', 'Sambrial', 'Sargodha', 'Sheikhupura', 'Shikarpur', 'Sialkot', 
+                  'Sukkur', 'Swabi', 'Tando Adam', 'Taxila', 'Umerkot', 'Vehari', 'Wah Cantt', 'Wazirabad', 'Zhob'
+                ].sort().map(city => (
                   <option key={city} value={city}>{city}</option>
                 ))}
               </select>
