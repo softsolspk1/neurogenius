@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // Replace with your production Vercel URL or local IP for testing
-const BASE_URL = 'https://neuro-genius-gamma.vercel.app'; // Defaulting to the known Vercel endpoint
+const BASE_URL = 'https://neurogenius.vercel.app'; // Correct production Vercel URL
 
 const api = axios.create({
   baseURL: `${BASE_URL}/api`,
