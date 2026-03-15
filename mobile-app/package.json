@@ -29,6 +29,6 @@
     "babel-preset-expo": "~11.0.0"
   },
   "private": true,
-  "name": "neuro-genius",
+  "name": "neuro-genius-mobile",
   "version": "1.0.0"
 }
