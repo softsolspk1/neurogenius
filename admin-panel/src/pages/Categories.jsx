@@ -112,8 +112,11 @@ const Categories = () => {
             </thead>
             <tbody>
               {categories.map(cat => (
-                <tr key={cat.id}>
-                  <td style={{ padding: '1.25rem', fontWeight: '700', color: 'var(--primary)' }}>{cat.name}</td>
+                <tr key={cat.id} className="table-row-hover">
+                  <td style={{ padding: '1.25rem' }}>
+                    <div style={{ fontWeight: '700', color: 'var(--primary)', fontSize: '1rem' }}>{cat.name}</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>ID: {cat.id}</div>
+                  </td>
                   <td style={{ padding: '1.25rem', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
                     {cat.description || `Medical topics related to ${cat.name}`}
                   </td>
@@ -124,24 +127,25 @@ const Categories = () => {
                       fontSize: '0.875rem', 
                       fontWeight: '700',
                       backgroundColor: '#eff6ff',
-                      color: 'var(--primary)'
+                      color: 'var(--primary)',
+                      border: '1px solid #dbeafe'
                     }}>
-                      {cat.questionCount} Qs
+                      {cat.questionCount || 0} Questions
                     </span>
                   </td>
                   <td style={{ padding: '1.25rem' }}>
                     <div style={{ display: 'flex', gap: '0.75rem' }}>
                       <button 
                         onClick={() => handleOpenModal(cat)}
-                        className="btn" 
-                        style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'white' }}
+                        className="btn action-btn-edit" 
+                        title="Edit Category"
                       >
                         <Edit size={16} />
                       </button>
                       <button 
                         onClick={() => handleDelete(cat.id)}
-                        className="btn" 
-                        style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'white', color: '#ef4444' }}
+                        className="btn action-btn-delete" 
+                        title="Delete Category"
                       >
                         <Trash2 size={16} />
                       </button>
@@ -186,6 +190,23 @@ const Categories = () => {
           </button>
         </form>
       </Modal>
+
+      <style>{`
+        .table-row-hover { transition: all 0.2s; border-bottom: 1px solid var(--border); }
+        .table-row-hover:hover { background-color: #f8fafc; }
+        .action-btn-edit, .action-btn-delete { 
+          padding: 0.5rem; 
+          border-radius: 8px; 
+          border: 1px solid var(--border); 
+          background: white; 
+          transition: all 0.2s;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .action-btn-edit:hover { background: #eff6ff; color: var(--primary); border-color: var(--primary); transform: translateY(-1px); }
+        .action-btn-delete:hover { background: #fef2f2; color: #ef4444; border-color: #ef4444; transform: translateY(-1px); }
+      `}</style>
     </div>
   );
 };

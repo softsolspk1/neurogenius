@@ -35,7 +35,7 @@ const Quizzes = () => {
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
-      await api.post('/quizzes/session', newSession);
+      await api.post('/api/quizzes/session', newSession);
       setShowModal(false);
       fetchData();
     } catch (error) {

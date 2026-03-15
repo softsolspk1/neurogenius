@@ -263,8 +263,9 @@ const Users = () => {
                   'Murree', 'Muzaffarabad', 'Muzaffargarh', 'Nawabshah', 'Nowshera', 'Okara', 
                   'Pakpattan', 'Peshawar', 'Quetta', 'Rahim Yar Khan', 'Rawalpindi', 'Sadiqabad', 
                   'Sahiwal', 'Sambrial', 'Sargodha', 'Sheikhupura', 'Shikarpur', 'Sialkot', 'Sukkur', 
-                  'Swabi', 'Tando Adam', 'Taxila', 'Umerkot', 'Vehari', 'Wah Cantt', 'Wazirabad', 'Zhob'
-                ].sort().map(city => (
+                  'Swabi', 'Tando Adam', 'Taxila', 'Umerkot', 'Vehari', 'Wah Cantt', 'Wazirabad', 'Zhob',
+                  'Peshawar', 'Quetta', 'Sukkur', 'Larkana', 'Mardan', 'Gujranwala', 'Sialkot', 'Faisalabad'
+                ].sort().filter((v, i, a) => a.indexOf(v) === i).map(city => (
                   <option key={city} value={city}>{city}</option>
                 ))}
               </select>
