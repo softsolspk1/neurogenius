@@ -1,15 +1,19 @@
-
 const fs = require('fs');
 const cheerio = require('cheerio');
 const bcrypt = require('bcryptjs');
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
+
+console.log('--- DB POPULATION START ---');
 const { Category, Question, User, sequelize } = require('../models/index');
 
 async function populateData() {
   try {
-    console.log('Connecting to database and sinking schema...');
+    console.log('Connecting to database:', process.env.DATABASE_URL ? 'URL Found' : 'URL MISSING');
+    console.log('Syncing models with alter: true...');
     await sequelize.authenticate();
     await sequelize.sync({ alter: true });
-    console.log('Database connected and synced.');
+    console.log('Database synced.');
 
     // 0. Ensure all 15 Categories exist
     const categoriesList = [

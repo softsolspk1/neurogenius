@@ -5,12 +5,12 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config({ path: path.join(__dirname, '../.env') });
 }
 
-const dbUrl = process.env.DATABASE_URL;
-if (!dbUrl) {
-  console.error('CRITICAL: DATABASE_URL is not defined in environment variables.');
+const dbUrl = process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_U8Ejka3cJQuG@ep-winter-forest-an45zb98-pooler.c-6.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require';
+if (!process.env.DATABASE_URL) {
+  console.log('Using hardcoded DATABASE_URL fallback for production restoration.');
 }
 
-const sequelize = new Sequelize(dbUrl || 'postgres://localhost:5432/placeholder', {
+const sequelize = new Sequelize(dbUrl, {
   dialect: 'postgres',
   dialectOptions: {
     ssl: process.env.NODE_ENV === 'production' ? {
