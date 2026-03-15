@@ -19,7 +19,7 @@ exports.createSession = async (req, res) => {
       category_id,
       scheduled_at,
       status: 'scheduled',
-      created_by: req.user.id
+      created_by: req.user ? req.user.id : null
     });
 
     res.status(201).json({ success: true, session });
