@@ -18,15 +18,24 @@ const Quizzes = () => {
   }, []);
 
   const fetchData = async () => {
+    setLoading(true);
     try {
-      const [sessionsRes, categoriesRes] = await Promise.all([
-        api.get('/api/quizzes/active'),
-        api.get('/api/questions/categories')
-      ]);
+      // Fetch independently so one failure doesn't block the other
+      const sessP = api.get('/api/quizzes/active').catch(e => {
+        console.error('Failed to fetch active sessions:', e);
+        return { data: { sessions: [] } };
+      });
+      const catP = api.get('/api/questions/categories').catch(e => {
+        console.error('Failed to fetch categories:', e);
+        return { data: [] };
+      });
+
+      const [sessionsRes, categoriesRes] = await Promise.all([sessP, catP]);
+      
       setSessions(sessionsRes.data.sessions || []);
       setCategories(categoriesRes.data || []);
     } catch (error) {
-      console.error('Failed to fetch quizzes:', error);
+      console.error('System error in Ward Activity:', error);
     } finally {
       setLoading(false);
     }
