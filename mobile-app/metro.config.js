@@ -1,5 +1,20 @@
 const { getDefaultConfig } = require('expo/metro-config');
+const path = require('path');
 
-const config = getDefaultConfig(__dirname);
+// Find the project and workspace root
+const projectRoot = __dirname;
+// For monorepos, watch the root directory as well
+const workspaceRoot = path.resolve(projectRoot, '..');
+
+const config = getDefaultConfig(projectRoot);
+
+// 1. Watch all files within the monorepo
+config.watchFolders = [workspaceRoot];
+
+// 2. Let Metro know where to resolve packages and in what order
+config.resolver.nodeModulesPaths = [
+  path.resolve(projectRoot, 'node_modules'),
+  path.resolve(workspaceRoot, 'node_modules'),
+];
 
 module.exports = config;
