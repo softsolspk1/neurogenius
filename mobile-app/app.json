@@ -40,14 +40,9 @@
         }
       ]
     ],
-    "extra": {
-      "eas": {
-        "projectId": "5174bad6-15fd-4ee8-9622-9a1ef573520c"
-      },
-      "cli": {
-        "appVersionSource": "remote"
-      }
-    },
     "owner": "softsols123"
+  },
+  "cli": {
+    "appVersionSource": "remote"
   }
 }
