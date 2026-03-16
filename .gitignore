@@ -11,8 +11,6 @@ dist/
 build/
 .vite/
 .expo/
-android/
-ios/
 
 # OS files
 .DS_Store

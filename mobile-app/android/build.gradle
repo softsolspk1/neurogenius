@@ -1,0 +1,84 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext {
+        buildToolsVersion = "34.0.0"
+        minSdkVersion = 23
+        compileSdkVersion = 34
+        targetSdkVersion = 34
+        kotlinVersion = "1.9.23"
+        ndkVersion = "26.1.10909125"
+    }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath('com.android.tools.build:gradle')
+        classpath('com.facebook.react:react-native-gradle-plugin')
+        classpath('org.jetbrains.kotlin:kotlin-gradle-plugin')
+    }
+}
+
+// Define the path to node_modules for all subprojects (handles monorepos and standalone)
+def resolveNodeModules() {
+    def candidates = [
+        new File(rootDir, "../node_modules"),          // Local (bare or EAS standalone)
+        new File(rootDir, "../../../node_modules")    // Monorepo root (local workspace)
+    ]
+    for (File dir : candidates) {
+        if (new File(dir, "react-native/package.json").exists()) {
+            return dir
+        }
+    }
+    // Fallback: use node to find it
+    return new File(['node', '--print', "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim()).getParentFile().getParentFile()
+}
+
+def nodeModulesDir = resolveNodeModules()
+rootProject.ext.REACT_NATIVE_NODE_MODULES_DIR = nodeModulesDir
+
+apply plugin: "com.facebook.react.rootproject"
+
+allprojects {
+    configurations.all {
+        resolutionStrategy {
+            force "com.facebook.react:react-android:0.74.5"
+            force "com.facebook.react:hermes-android:0.74.5"
+        }
+    }
+    
+    repositories {
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url(new File(nodeModulesDir, "react-native/android").getAbsolutePath())
+        }
+        maven {
+            // Android JSC is installed from npm
+            url(new File(['node', '--print', "require.resolve('jsc-android/package.json', { paths: [require.resolve('react-native/package.json')] })"].execute(null, rootDir).text.trim(), '../dist'))
+        }
+
+        google()
+        mavenCentral()
+        maven { url 'https://www.jitpack.io' }
+    }
+}
+
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            project.android {
+                compileSdkVersion 34
+                buildToolsVersion "34.0.0"
+                
+                if (project.android.hasProperty('defaultConfig')) {
+                    targetSdkVersion 34
+                }
+            }
+        }
+        // Force the modules dir property on the subproject's extension
+        if (project.extensions.hasProperty('extraProperties')) {
+            project.ext.set("REACT_NATIVE_NODE_MODULES_DIR", nodeModulesDir)
+        }
+    }
+}
