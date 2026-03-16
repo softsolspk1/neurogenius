@@ -1,4 +1,3 @@
-
 {
   "engines": {
     "node": "20.x"
@@ -13,9 +12,12 @@
   "scripts": {
     "dev:backend": "npm run dev --prefix backend",
     "dev:admin": "npm run dev --prefix admin-panel",
-    "build:admin": "npm run build --prefix admin-panel"
+    "build:admin": "npm run build --prefix admin-panel",
+    "postinstall": "patch-package"
   },
   "dependencies": {
+    "@babel/core": "^7.24.0",
+    "babel-preset-expo": "~11.0.0",
     "bcryptjs": "^3.0.3",
     "cheerio": "^1.2.0",
     "cors": "^2.8.6",
@@ -26,10 +28,14 @@
     "pg": "^8.20.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.8",
-    "socket.io": "^4.8.3",
-    "@babel/core": "^7.24.0",
-    "babel-preset-expo": "~11.0.0"
+    "socket.io": "^4.8.3"
   },
   "devDependencies": {
+    "patch-package": "^8.0.1"
+  },
+  "overrides": {
+    "react-native": "0.74.5",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   }
 }
