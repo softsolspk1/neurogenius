@@ -17,4 +17,10 @@ config.resolver.nodeModulesPaths = [
   path.resolve(workspaceRoot, 'node_modules'),
 ];
 
+// Force Metro to resolve these packages from the hoisted root if they aren't found locally
+config.resolver.extraNodeModules = {
+  '@react-navigation/elements': path.resolve(workspaceRoot, 'node_modules/@react-navigation/elements'),
+  '@react-navigation/routers': path.resolve(workspaceRoot, 'node_modules/@react-navigation/routers'),
+};
+
 module.exports = config;
