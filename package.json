@@ -12,8 +12,7 @@
   "scripts": {
     "dev:backend": "npm run dev --prefix backend",
     "dev:admin": "npm run dev --prefix admin-panel",
-    "build:admin": "npm run build --prefix admin-panel",
-    "postinstall": "patch-package"
+    "build:admin": "npm run build --prefix admin-panel"
   },
   "dependencies": {
     "@babel/core": "^7.24.0",
@@ -31,7 +30,6 @@
     "socket.io": "^4.8.3"
   },
   "devDependencies": {
-    "patch-package": "^8.0.1"
   },
   "overrides": {
     "react-native": "0.74.5",
