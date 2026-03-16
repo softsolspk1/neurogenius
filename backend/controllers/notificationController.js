@@ -1,5 +1,6 @@
 
-const { Notification } = require('../models');
+const { Notification, sequelize } = require('../models');
+const { Op } = require('sequelize');
 
 exports.createNotification = async (req, res) => {
   try {

@@ -1,5 +1,5 @@
 
-const { QuizSession, Question, Category } = require('../models');
+const { QuizSession, Question, Category, User, GameResult, sequelize } = require('../models');
 const crypto = require('crypto');
 
 exports.createSession = async (req, res) => {

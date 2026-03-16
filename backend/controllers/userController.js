@@ -1,5 +1,5 @@
 
-const User = require('../models/User');
+const { User } = require('../models');
 const { authenticateToken, isAdmin } = require('../middleware/auth');
 
 exports.getAllUsers = async (req, res) => {
