@@ -65,20 +65,25 @@ allprojects {
 }
 
 subprojects {
-    afterEvaluate { project ->
-        if (project.hasProperty('android')) {
-            project.android {
-                compileSdkVersion 34
-                buildToolsVersion "34.0.0"
-                
-                if (project.android.hasProperty('defaultConfig')) {
-                    targetSdkVersion 34
-                }
-            }
+    // Set the property on every project immediately to avoid resolution issues
+    project.ext.set("REACT_NATIVE_NODE_MODULES_DIR", nodeModulesDir)
+
+    project.configurations.all {
+        resolutionStrategy {
+            force "com.facebook.react:react-android:0.74.5"
+            force "com.facebook.react:hermes-android:0.74.5"
         }
-        // Force the modules dir property on the subproject's extension
-        if (project.extensions.hasProperty('extraProperties')) {
-            project.ext.set("REACT_NATIVE_NODE_MODULES_DIR", nodeModulesDir)
+    }
+
+    // Use a plugin-based listener to avoid "already evaluated" errors
+    project.plugins.withType(com.android.build.gradle.BasePlugin) {
+        project.android {
+            compileSdkVersion 34
+            buildToolsVersion "34.0.0"
+            
+            if (project.android.hasProperty('defaultConfig')) {
+                targetSdkVersion 34
+            }
         }
     }
 }
