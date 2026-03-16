@@ -40,9 +40,11 @@
         }
       ]
     ],
+    "owner": "softsols123",
+      "cli": {
+        "appVersionSource": "remote"
+      }
+    },
     "owner": "softsols123"
-  },
-  "cli": {
-    "appVersionSource": "remote"
   }
 }

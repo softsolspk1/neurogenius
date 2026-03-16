@@ -68,22 +68,16 @@ subprojects {
     // Set the property on every project immediately to avoid resolution issues
     project.ext.set("REACT_NATIVE_NODE_MODULES_DIR", nodeModulesDir)
 
+    // Also set versioning properties in subproject extra properties for libraries that don't check rootProject
+    project.ext.set("compileSdkVersion", 34)
+    project.ext.set("targetSdkVersion", 34)
+    project.ext.set("buildToolsVersion", "34.0.0")
+    project.ext.set("minSdkVersion", 23)
+
     project.configurations.all {
         resolutionStrategy {
             force "com.facebook.react:react-android:0.74.5"
             force "com.facebook.react:hermes-android:0.74.5"
-        }
-    }
-
-    // Use a plugin-based listener to avoid "already evaluated" errors
-    project.plugins.withType(com.android.build.gradle.BasePlugin) {
-        project.android {
-            compileSdkVersion 34
-            buildToolsVersion "34.0.0"
-            
-            if (project.android.hasProperty('defaultConfig')) {
-                targetSdkVersion 34
-            }
         }
     }
 }
